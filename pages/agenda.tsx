@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 
 import BarbecueDetails from "../components/barbecue-details";
@@ -18,9 +18,15 @@ const Schedule: NextPage<Props> = (): JSX.Element => {
   };
 
   const handleChange = (barbecue: Barbecue) => {
+    localStorage.setItem("barbecues", JSON.stringify([...barbecues, barbecue]));
     setBarbecues([...barbecues, barbecue]);
     handleModal();
   };
+
+  useEffect(() => {
+    const storedArray = JSON.parse(localStorage.getItem("barbecues") || "[]");
+    setBarbecues(storedArray);
+  }, []);
 
   return (
     <div className="p-6">
